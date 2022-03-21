@@ -1,14 +1,13 @@
 package com.josiel.starwars.model;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@RequiredArgsConstructor
+@AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
 public class Rebel {
@@ -17,9 +16,9 @@ public class Rebel {
     private String name;
     private int age;
     private char genre;
-    @OneToOne
+    @OneToOne(cascade=CascadeType.ALL)
     private Position position;
-    @OneToMany
+    @OneToMany(cascade=CascadeType.ALL)
     private List<Item> inventory;
     private int betrayerReportsCount;
 }

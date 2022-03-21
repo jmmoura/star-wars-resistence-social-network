@@ -4,10 +4,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 @Entity
 @RequiredArgsConstructor
@@ -16,10 +13,8 @@ import javax.persistence.ManyToOne;
 public class ItemOffer {
     @Id @GeneratedValue
     private Integer id;
-    @ManyToOne
-    private Rebel proposer;
-    @ManyToOne
-    private Rebel receiver;
+    private Integer proposerId;
+    private Integer receiverId;
     private ItemDescription itemDescription;
     private int amount;
 }
