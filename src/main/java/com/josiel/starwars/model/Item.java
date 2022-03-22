@@ -1,18 +1,18 @@
 package com.josiel.starwars.model;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+public enum Item {
+    ARMA(4),
+    MUNICAO(3),
+    AGUA(2),
+    COMIDA(1);
 
-import javax.persistence.*;
+    private int points;
 
-@Entity
-@RequiredArgsConstructor
-@Getter
-@Setter
-public class Item {
-    @Id @GeneratedValue
-    private Integer id;
-    private ItemDescription description;
-    private int amount;
+    Item(int points) {
+        this.points = points;
+    }
+
+    public int getPoints() {
+        return points;
+    }
 }

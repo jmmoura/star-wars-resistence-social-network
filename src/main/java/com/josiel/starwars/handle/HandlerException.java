@@ -1,9 +1,9 @@
 package com.josiel.starwars.handle;
 
+import com.josiel.starwars.exception.AmountItemsPointsDoesNotMatchException;
 import com.josiel.starwars.exception.ItemOfferAmountOutOfBoundsException;
 import com.josiel.starwars.exception.ItemOfferNotFoundException;
 import com.josiel.starwars.exception.RebelNotFoundException;
-import com.josiel.starwars.model.Item;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -25,5 +25,10 @@ public class HandlerException {
     @ExceptionHandler({ItemOfferAmountOutOfBoundsException.class})
     public ResponseEntity<Object> hadlerTaskNotFound(ItemOfferAmountOutOfBoundsException itemOfferAmountOutOfBoundsException){
         return  ResponseEntity.status(HttpStatus.BAD_REQUEST).body(itemOfferAmountOutOfBoundsException.getMessage());
+    }
+
+    @ExceptionHandler({AmountItemsPointsDoesNotMatchException.class})
+    public ResponseEntity<Object> hadlerTaskNotFound(AmountItemsPointsDoesNotMatchException amountItemsPointsDoesNotMatchException){
+        return  ResponseEntity.status(HttpStatus.BAD_REQUEST).body(amountItemsPointsDoesNotMatchException.getMessage());
     }
 }

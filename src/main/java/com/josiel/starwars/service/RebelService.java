@@ -1,6 +1,8 @@
 package com.josiel.starwars.service;
 
 import com.josiel.starwars.exception.RebelNotFoundException;
+import com.josiel.starwars.model.ItemSet;
+import com.josiel.starwars.model.Item;
 import com.josiel.starwars.model.Rebel;
 import com.josiel.starwars.repository.RebelRepository;
 import lombok.RequiredArgsConstructor;
@@ -47,6 +49,20 @@ public class RebelService {
         }
         Rebel rebel = optionalRebel.get();
         rebel.setBetrayerReportsCount(rebel.getBetrayerReportsCount()+1);
+        return rebelRepository.save(rebel);
+    }
+
+    public Rebel updateInventory(Integer id, Item item, int amount) {
+        Optional<Rebel> optionalRebel = rebelRepository.findById(id);
+        if (!optionalRebel.isPresent()) {
+            throw new RebelNotFoundException();
+        }
+        Rebel rebel = optionalRebel.get();
+        for (ItemSet itemSet : rebel.getInventory()) {
+            if (itemSet.getItem() == item) {
+                itemSet.setAmount(amount);
+            }
+        }
         return rebelRepository.save(rebel);
     }
 

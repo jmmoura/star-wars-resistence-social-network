@@ -4,10 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class StarWarsResistenceSocialNetworkApplication {
+public class StarWarsResistanceSocialNetworkApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(StarWarsResistenceSocialNetworkApplication.class, args);
+		SpringApplication.run(StarWarsResistanceSocialNetworkApplication.class, args);
 	}
 
 }

@@ -31,7 +31,7 @@ public class ItemOfferController {
     }
 
     @PostMapping
-    public ResponseEntity<ItemOffer> save(@Valid @RequestBody ItemOffer itemOffer) {
-        return ResponseEntity.ok(itemOfferService.save(itemOffer));
+    public ResponseEntity<ItemOffer> offerItem(@Valid @RequestBody ItemOffer itemOffer) {
+        return ResponseEntity.ok(itemOfferService.offerItem(itemOffer));
     }
 }

@@ -19,6 +19,6 @@ public class Rebel {
     @OneToOne(cascade=CascadeType.ALL)
     private Position position;
     @OneToMany(cascade=CascadeType.ALL)
-    private List<Item> inventory;
+    private List<ItemSet> inventory;
     private int betrayerReportsCount;
 }
