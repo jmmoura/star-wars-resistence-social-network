@@ -13,7 +13,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Controller
@@ -39,17 +41,10 @@ public class ReportsController {
 
         double betrayersPercent = betrayersAmount * 100 / rebelsAmount;
 
-        ObjectMapper mapper = new ObjectMapper();
-        ObjectNode betrayersReport = mapper.createObjectNode();
-        betrayersReport.put("betrayersPercent", betrayersPercent + "%");
+        HashMap<String, String> itemsAverage = new HashMap<>();
+        itemsAverage.put("betrayersPercent", String.format("%.1f%", betrayersPercent));
 
-        String json = "";
-        try {
-            json = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(betrayersReport);
-        }catch (Exception e) {
-            e.printStackTrace();
-        }
-
+        String json = generateJSON(itemsAverage);
         return ResponseEntity.ok(json);
     }
 
@@ -57,7 +52,7 @@ public class ReportsController {
     public ResponseEntity<String> getRebelsPercent() {
         List<Rebel> rebels = rebelService.findAll();
         int rebelsAmount = rebels.size();
-        int notBetrayersAmount = rebels.stream()
+        int nonBetrayersAmount = rebels.stream()
                 .filter(rebel -> rebel.getBetrayerReportsCount() < 3)
                 .collect(Collectors.toList())
                 .size();
@@ -66,19 +61,12 @@ public class ReportsController {
             return ResponseEntity.ok("There is no rebels registered yet!");
         }
 
-        double betrayersPercent = notBetrayersAmount * 100 / rebelsAmount;
+        double nonBetrayersPercent = nonBetrayersAmount * 100 / rebelsAmount;
 
-        ObjectMapper mapper = new ObjectMapper();
-        ObjectNode betrayersReport = mapper.createObjectNode();
-        betrayersReport.put("rebelsPercent", betrayersPercent + "%");
+        HashMap<String, String> itemsAverage = new HashMap<>();
+        itemsAverage.put("rebelsPercent", String.format("%.1f%", nonBetrayersPercent));
 
-        String json = "";
-        try {
-            json = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(betrayersReport);
-        }catch (Exception e) {
-            e.printStackTrace();
-        }
-
+        String json = generateJSON(itemsAverage);
         return ResponseEntity.ok(json);
     }
 
@@ -121,20 +109,13 @@ public class ReportsController {
         double aguaAverage = agua / notBetrayers.size();
         double comidaAverage = comida / notBetrayers.size();
 
-        ObjectMapper mapper = new ObjectMapper();
-        ObjectNode betrayersReport = mapper.createObjectNode();
-        betrayersReport.put("armaAverage", armaAverage);
-        betrayersReport.put("municaoAverage", municaoAverage);
-        betrayersReport.put("aguaAverage", aguaAverage);
-        betrayersReport.put("comidaAverage", comidaAverage);
-
-        String json = "";
-        try {
-            json = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(betrayersReport);
-        }catch (Exception e) {
-            e.printStackTrace();
-        }
-
+        HashMap<String, String> itemsAverage = new HashMap<>();
+        itemsAverage.put("armaAverage", String.format("%.1f", armaAverage));
+        itemsAverage.put("municaoAverage", String.format("%.1f", municaoAverage));
+        itemsAverage.put("aguaAverage", String.format("%.1f", aguaAverage));
+        itemsAverage.put("comidaAverage", String.format("%.1f", comidaAverage));
+        
+        String json = generateJSON(itemsAverage);
         return ResponseEntity.ok(json);
     }
 
@@ -163,5 +144,24 @@ public class ReportsController {
             e.printStackTrace();
         }
         return ResponseEntity.ok(json);
+    }
+    
+    private String generateJSON(HashMap<String, String> itemsAverage) {
+        ObjectMapper mapper = new ObjectMapper();
+        ObjectNode betrayersReport = mapper.createObjectNode();
+
+        for (Map.Entry<String, String> entry :
+                itemsAverage.entrySet()) {
+            betrayersReport.put(entry.getKey(), entry.getValue());
+        }
+
+        String json = "";
+        try {
+            json = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(betrayersReport);
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return json;
     }
 }

@@ -4,7 +4,7 @@
 API Docs:  
 https://www.postman.com/lively-star-655599/workspace/star-wars-resistance-social-network/overview
 
-Para trocar items de inentário, são necessárias duas chamadas POST para o endpoint /api/offer-item, uma de cada rebelde envolvido na troca. Eles devem oferecer itens com o total de pontos equivalentes.
+Para trocar items de inv    entário, são necessárias duas chamadas POST para o endpoint /api/offer-item, uma de cada rebelde envolvido na troca. Eles devem oferecer itens com o total de pontos equivalentes.
 
 Valores dos itens:
 ARMA: 4;
@@ -28,7 +28,7 @@ O rebelde com ID 1 oferece uma munição (3 pontos) para o rebelde com ID 7. O b
 	}  
 
 
-O rebelde com ID 7 oferece uma água (2 pontos) e uma comidas (1 ponto) para o rebelde com ID 1. O body da chamada será:
+O rebelde com ID 7 oferece uma água (2 pontos) e uma comida (1 ponto) para o rebelde com ID 1. O body da chamada será:
 
 
     {
