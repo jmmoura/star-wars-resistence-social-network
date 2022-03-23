@@ -4,7 +4,7 @@
 API Docs:  
 https://www.postman.com/lively-star-655599/workspace/star-wars-resistance-social-network/overview
 
-Para trocar items de inv    entário, são necessárias duas chamadas POST para o endpoint /api/offer-item, uma de cada rebelde envolvido na troca. Eles devem oferecer itens com o total de pontos equivalentes.
+Para trocar items de inventário, são necessárias duas chamadas POST para o endpoint /api/offer-item, uma de cada rebelde envolvido na troca. Eles devem oferecer itens com o total de pontos equivalentes.
 
 Valores dos itens:
 ARMA: 4;
