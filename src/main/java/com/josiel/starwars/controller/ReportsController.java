@@ -42,7 +42,7 @@ public class ReportsController {
         double betrayersPercent = betrayersAmount * 100 / rebelsAmount;
 
         HashMap<String, String> itemsAverage = new HashMap<>();
-        itemsAverage.put("betrayersPercent", String.format("%.1f%", betrayersPercent));
+        itemsAverage.put("betrayersPercent", String.format("%.1f%%", betrayersPercent));
 
         String json = generateJSON(itemsAverage);
         return ResponseEntity.ok(json);
@@ -64,7 +64,7 @@ public class ReportsController {
         double nonBetrayersPercent = nonBetrayersAmount * 100 / rebelsAmount;
 
         HashMap<String, String> itemsAverage = new HashMap<>();
-        itemsAverage.put("rebelsPercent", String.format("%.1f%", nonBetrayersPercent));
+        itemsAverage.put("rebelsPercent", String.format("%.1f%%", nonBetrayersPercent));
 
         String json = generateJSON(itemsAverage);
         return ResponseEntity.ok(json);
@@ -133,16 +133,10 @@ public class ReportsController {
                     .reduce(0, Integer::sum);
         }
 
-        ObjectMapper mapper = new ObjectMapper();
-        ObjectNode betrayersReport = mapper.createObjectNode();
-        betrayersReport.put("lostPoints", lostPoints);
+        HashMap<String, String> itemsAverage = new HashMap<>();
+        itemsAverage.put("lostPoints", String.format("%d", lostPoints));
 
-        String json = "";
-        try {
-            json = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(betrayersReport);
-        }catch (Exception e) {
-            e.printStackTrace();
-        }
+        String json = generateJSON(itemsAverage);
         return ResponseEntity.ok(json);
     }
     
