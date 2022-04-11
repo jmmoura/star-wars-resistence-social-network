@@ -4,6 +4,7 @@ import com.josiel.starwars.exception.*;
 import com.josiel.starwars.model.ItemSet;
 import com.josiel.starwars.model.ItemOffer;
 import com.josiel.starwars.model.Rebel;
+import com.josiel.starwars.model.User;
 import com.josiel.starwars.repository.ItemOfferRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,12 +18,17 @@ import java.util.Optional;
 public class ItemOfferService {
 
     @Autowired
-    private ItemOfferRepository itemOfferRepository;
+    private final ItemOfferRepository itemOfferRepository;
+
     @Autowired
-    private RebelService rebelService;
+    private final RebelService rebelService;
+
+    @Autowired
+    private final SecurityService securityService;
 
     public List<ItemOffer> findAll() {
-        return itemOfferRepository.findAll();
+        Rebel proposer = getProposer();
+        return itemOfferRepository.findByProposerId(proposer.getId());
     }
 
     public ItemOffer findByProposerIdAndReceiverId(Integer proposerId, Integer receiverId) {
@@ -33,8 +39,17 @@ public class ItemOfferService {
         throw new ItemOfferNotFoundException();
     }
 
+    public ItemOffer findByReceiverId(Integer receiverId) {
+        Rebel proposer = getProposer();
+        Optional<ItemOffer> optionalItemOffer = itemOfferRepository.findByProposerIdAndReceiverId(proposer.getId(), receiverId);
+        if (optionalItemOffer.isPresent()) {
+            return optionalItemOffer.get();
+        }
+        throw new ItemOfferNotFoundException();
+    }
+
     public ItemOffer offerItem(ItemOffer itemOffer) {
-        Rebel proposer = rebelService.findById(itemOffer.getProposerId());
+        Rebel proposer = getProposer();
         Rebel receiver = rebelService.findById(itemOffer.getReceiverId());
 
         if (proposer.getBetrayerReportsCount() > 2 || receiver.getBetrayerReportsCount() > 2) {
@@ -55,6 +70,7 @@ public class ItemOfferService {
         try {
             firstItemOffer = findByProposerIdAndReceiverId(receiver.getId(), proposer.getId());
         } catch (ItemOfferNotFoundException e) {
+            itemOffer.setProposerId(proposer.getId());
             return itemOfferRepository.save(itemOffer);
         }
 
@@ -82,6 +98,11 @@ public class ItemOfferService {
             throw new RebelNotFoundException();
         }
         itemOfferRepository.deleteById(id);
+    }
+
+    private Rebel getProposer() {
+        User user = securityService.getCurrentUser();
+        return rebelService.findByUser(user);
     }
 
     private void updateAmount(Rebel proposer, Rebel receiver, ItemOffer itemOffer) {

@@ -4,6 +4,7 @@ import com.josiel.starwars.exception.RebelNotFoundException;
 import com.josiel.starwars.model.ItemSet;
 import com.josiel.starwars.model.Item;
 import com.josiel.starwars.model.Rebel;
+import com.josiel.starwars.model.User;
 import com.josiel.starwars.repository.RebelRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,10 @@ import java.util.Optional;
 public class RebelService {
 
     @Autowired
-    private RebelRepository rebelRepository;
+    private final RebelRepository rebelRepository;
+
+    @Autowired
+    private final SecurityService securityService;
 
     public List<Rebel> findAll() {
         return rebelRepository.findAll();
@@ -31,6 +35,14 @@ public class RebelService {
 
     public Rebel findById(Integer id) {
         Optional<Rebel> optionalRebel = rebelRepository.findById(id);
+        if (optionalRebel.isPresent()) {
+            return optionalRebel.get();
+        }
+        throw new RebelNotFoundException();
+    }
+
+    public Rebel findByUser(User user) {
+        Optional<Rebel> optionalRebel = rebelRepository.findByUser(user);
         if (optionalRebel.isPresent()) {
             return optionalRebel.get();
         }
@@ -81,20 +93,27 @@ public class RebelService {
 
     private Rebel merge(Rebel rebelOld, Rebel rebelNew) {
         rebelNew.setId(rebelOld.getId());
-        rebelNew.setName(rebelOld.getName());
+        if (rebelNew.getName() == null && rebelNew.getName().isBlank()) {
+            rebelNew.setName(rebelOld.getName());
+        }
+        if (rebelNew.getUser() == null) {
+            rebelNew.setUser(rebelOld.getUser());
+        }
         if (rebelNew.getAge() <= 0) {
             rebelNew.setAge(rebelOld.getAge());
         }
-        rebelNew.setGenre(rebelOld.getGenre());
+        if (rebelNew.getGenre() == '\u0000') {
+            rebelNew.setGenre(rebelOld.getGenre());
+        }
         if (rebelNew.getPosition() == null) {
             rebelNew.setPosition(rebelOld.getPosition());
         } else {
             rebelNew.getPosition().setId(rebelOld.getPosition().getId());
+            User user = securityService.getCurrentUser();
+            rebelNew.getPosition().setUpdatedByAdmin(user.getRole().toUpperCase() == "ADMIN");
         }
         rebelNew.setInventory(rebelOld.getInventory());
-        if (rebelNew.getBetrayerReportsCount() <= 0) {
-            rebelNew.setBetrayerReportsCount(rebelOld.getBetrayerReportsCount());
-        }
+        rebelNew.setBetrayerReportsCount(rebelOld.getBetrayerReportsCount());
         return rebelNew;
     }
 }

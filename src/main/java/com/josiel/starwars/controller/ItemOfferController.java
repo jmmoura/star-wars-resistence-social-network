@@ -1,7 +1,6 @@
 package com.josiel.starwars.controller;
 
 import com.josiel.starwars.model.ItemOffer;
-import com.josiel.starwars.model.Rebel;
 import com.josiel.starwars.service.ItemOfferService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,9 +24,9 @@ public class ItemOfferController {
         return ResponseEntity.ok(itemOfferService.findAll());
     }
 
-    @GetMapping("/{proposerId}/{receiverId}")
-    public ResponseEntity<ItemOffer> findById(@PathVariable Integer proposerId, @PathVariable Integer receiverId) {
-        return ResponseEntity.ok(itemOfferService.findByProposerIdAndReceiverId(proposerId, receiverId));
+    @GetMapping("/{receiverId}")
+    public ResponseEntity<ItemOffer> findByReceiverId(@PathVariable Integer receiverId) {
+        return ResponseEntity.ok(itemOfferService.findByReceiverId(receiverId));
     }
 
     @PostMapping

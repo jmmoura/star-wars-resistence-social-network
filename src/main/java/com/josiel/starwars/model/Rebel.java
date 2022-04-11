@@ -13,6 +13,8 @@ import java.util.List;
 public class Rebel {
     @Id @GeneratedValue
     private Integer id;
+    @OneToOne(cascade=CascadeType.ALL)
+    private User user;
     private String name;
     private int age;
     private char genre;
