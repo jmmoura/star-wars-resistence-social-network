@@ -15,6 +15,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.data.web.SortDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -72,6 +73,8 @@ public class RebelController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping
     public ResponseEntity<Rebel> save(@Valid @RequestBody Rebel rebel) {
+        User user = rebel.getUser();
+        user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
         return ResponseEntity.ok(rebelService.save(rebel));
     }
 
