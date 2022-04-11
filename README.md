@@ -13,11 +13,10 @@ AGUA: 2;
 COMIDA: 1.
 
 Por exemplo:  
-O rebelde com ID 1 oferece uma munição (3 pontos) para o rebelde com ID 7. O body da chamada será:
+O rebelde logado oferece uma munição (3 pontos) para o rebelde com ID 7. O body da chamada será:
 
 
     {
-		"proposerId": 1,
 		"receiverId": 7,
 		"itemSetList": [
 			{
@@ -28,11 +27,10 @@ O rebelde com ID 1 oferece uma munição (3 pontos) para o rebelde com ID 7. O b
 	}  
 
 
-O rebelde com ID 7 oferece uma água (2 pontos) e uma comida (1 ponto) para o rebelde com ID 1. O body da chamada será:
+O rebelde logado oferece uma água (2 pontos) e uma comida (1 ponto) para o rebelde com ID 1. O body da chamada será:
 
 
     {
-		"proposerId": 7,
 		"receiverId": 1,
 		"itemSetList": [
 			{
