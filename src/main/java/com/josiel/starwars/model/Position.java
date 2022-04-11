@@ -20,4 +20,5 @@ public class Position {
     private String name;
     private double latitude;
     private double longitude;
+    private boolean isUpdatedByAdmin;
 }

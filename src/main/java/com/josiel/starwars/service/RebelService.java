@@ -7,6 +7,8 @@ import com.josiel.starwars.model.Rebel;
 import com.josiel.starwars.repository.RebelRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,6 +23,10 @@ public class RebelService {
 
     public List<Rebel> findAll() {
         return rebelRepository.findAll();
+    }
+
+    public Page<Rebel> findAllByPage(Pageable pageable) {
+        return rebelRepository.findAll(pageable);
     }
 
     public Rebel findById(Integer id) {
