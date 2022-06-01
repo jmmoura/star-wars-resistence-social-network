@@ -1,14 +1,15 @@
 version: '3'
 services:
-  docker-app:
-    image: star-wars-api
+  star-wars-app:
+    image: jmmoura/star-wars-api
     ports:
-      - "8080:8080"
+      - "8082:8080"
     depends_on:
-      - docker-postgres
-  docker-postgres:
+      - star-wars-postgres
+  star-wars-postgres:
     image: postgres:14
+    user: postgres
     environment:
       - POSTGRES_DB=star-wars
       - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_PASSWORD=12345678
