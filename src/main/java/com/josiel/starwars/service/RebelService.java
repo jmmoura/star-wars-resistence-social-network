@@ -93,7 +93,7 @@ public class RebelService {
 
     private Rebel merge(Rebel rebelOld, Rebel rebelNew) {
         rebelNew.setId(rebelOld.getId());
-        if (rebelNew.getName() == null && rebelNew.getName().isBlank()) {
+        if (rebelNew.getName() == null || rebelNew.getName().isBlank()) {
             rebelNew.setName(rebelOld.getName());
         }
         if (rebelNew.getUser() == null) {
@@ -110,7 +110,7 @@ public class RebelService {
         } else {
             rebelNew.getPosition().setId(rebelOld.getPosition().getId());
             User user = securityService.getCurrentUser();
-            rebelNew.getPosition().setUpdatedByAdmin(user.getRole().toUpperCase() == "ADMIN");
+            rebelNew.getPosition().setUpdatedByAdmin(user.getRole().equalsIgnoreCase("ADMIN"));
         }
         rebelNew.setInventory(rebelOld.getInventory());
         rebelNew.setBetrayerReportsCount(rebelOld.getBetrayerReportsCount());
